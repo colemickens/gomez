@@ -1,0 +1,48 @@
+<div class="row">
+	<div class="six columns centered">
+
+		<center><h1>♫<br/>gomez</h1></center>
+	</div>
+</div>
+<div class="row">
+	<br/><br/><br/><br/>
+</div>
+<div>
+	<div class="six columns centered">
+		<ul>Recent Changes:
+			<li>Login! (Login, then send me a text and I'll allow you in).</li>
+			<li>Fixed seek bar, duration.</li>
+			<li>Switched from json->bson->mgo to json->prepared statements->postgres.</li>
+			<li>Fixed duplicates.</li>
+			<li>http://www.upnp-hacks.org/sane2006-paper.pdf</li>
+		</ul>
+
+		<ul>In Progress:
+			<li>LOGIN</li>
+			<li>Experimenting with Dart</li>
+			<li>Fixing English audio stream. Quick hack for now (always select English), will make it a dropdown list later to choose between</li>
+			<li>TVDB for TV Shows</li>
+			<li>Restructure with "channels" for use with UPnP.</li>
+			<li>Fixing the browser UI, HTTP headers for downloads, making it more obvious that the download link will stream on Android/iOS/etc [can already be used on tablets/smartphones but the files are big]</li>
+		</ul>
+		
+		<ul>Web Frontend:
+			<li>poor linkage, crashes don't return you to video screen/tab, let alone remember playback position</li>
+			<li>code duplication in js controllers</li>
+			<li>only the first video player (I hate jwplayer/[mediaplayer])</li>
+			<li>info -> watch -> [watch] -> info -> watch [it has lost your location]</li>
+			<li>[resume] / [start-over]</li>
+		</ul>
+		
+		<ul>Other Networking:
+			<li>Started UPnP work...</li>
+		</ul>
+
+		<ul>Known Bugs:
+			<li>Duplicate videos</li>
+			<li>video doesn't resize with window (great, how does this affect the rounding correction?</li>
+			<li>no options</li>
+			<li>server side rounding correction may cause different aspect ratio than the client video is sized to (do same correction in js also? do it in js instead? <em>Doing it in JS would allow users to request the wrong aspect ratio, could be a good thing, would need to document the metadata of the original aspect ratio. This could also be done as filters /download/&lt;file_id&gt;/filter:width=500,height=400/filter:crop:500/stream.{flv,webm}</li>
+		</ul>
+	</div>
+</div>

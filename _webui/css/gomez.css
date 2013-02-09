@@ -1,0 +1,62 @@
+/*
+html, body, * {
+	font-family: "Calibri", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+*/
+
+#movie-list {
+	padding: 10px;
+}
+
+nav {
+	margin-bottom: 0px !important;
+}
+
+.movie-list-grid-thumb { /* li */
+	border: 1px solid transparent;
+	padding-top: 8px !important;
+	padding-left: 14px !important;
+	padding-right: 14px !important;
+	margin-bottom: 8px;
+}
+
+.movie-list-grid-thumb img {
+	vertical-align: middle;
+	-moz-box-shadow: 0 0 5px #666;
+	-webkit-box-shadow: 0 0 5px#666;
+	box-shadow: 0 0 5px #666;
+}
+
+.movie-list-grid-thumb:hover img {
+	-moz-box-shadow: 0 0 10px #000;
+	-webkit-box-shadow: 0 0 10px#000;
+	box-shadow: 0 0 10px #000;
+}
+
+.movie-list-grid-thumb-title {
+	font-weight: bold;
+	color: #666;
+}
+
+.movie-list-grid-thumb:hover .movie-list-grid-thumb-title  {
+	font-weight: bold;
+	color: #333;
+	text-shadow: 0px 0px 10px #333;
+}
+
+.movie-list-grid-thumb-img {
+	height: 260px;
+	vertical-align: middle;
+	line-height: 260px;
+}
+
+/* borrowed from http://code.shrapp.nl/google-plus-ui-buttons/demo.html */
+.gplus-buttons {
+	background: #F1F1F1;
+	border: 1px solid #D2D2D2;
+	width: 100%;
+}
+
+pre {
+	font-family: "SourceCodePro", monospace;
+}

@@ -1,0 +1,120 @@
+<header style="border:1px solid #red; background-color:#2BA6CB">
+  <br/>
+
+  <div class="row">
+    <div class="twelve columns" style="">
+      <div>
+        <h1 style="font-weight:300; color: white">
+          tv shows <a href="#" style="font-size:40%; color:white"><i class="foundicon-view-mode"></i></a>
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="six columns" style="">
+        <input type="text" ng-model="search" placeholder="search"></input>
+    </div>
+    <!--
+    <div class="two columns" style="background-color:blue">
+      <ul>
+        <li>
+          <label for="quality-720p">
+            <input type="checkbox" id="quality-720p" style="display: none;">
+            <span class="custom checkbox"></span>720p
+          </label>
+        </li>
+        <li>
+          <label for="quality-regular">
+            <input type="checkbox" id="quality-regular" style="display: none;">
+            <span class="custom checkbox"></span>regular
+          </label>
+        </li>
+        <li>
+          <label for="quality-low">
+            <input type="checkbox" id="quality-low" style="display: none;">
+            <span class="custom checkbox"></span>low
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="four columns" style="background-color:blue">
+      <select style="" id="customDropdown">
+        <option ng-repeat="genre in genres">{{genre}}</option>
+      </select>
+    </div>
+  -->
+
+  </div>
+  <br/>
+  <br/>
+</header>
+
+<div class="row">
+  <div class="twelve columns">
+    <div class="row" id="tvshow-list">
+      <ul class="block-grid five-up">
+        <li class="tvshow-list-grid-thumb" ng-repeat="tvshow in tvshows | filter:search | orderBy:'title'">
+          <a ng-click="revealInfo(tvshow.id)">
+            <div class="tvshow-list-grid-thumb-img">
+              <img ng-src="{{tvshow.poster_url | posterurl}}"/>
+            </div>
+            <center><span class="tvshow-list-grid-thumb-title">{{tvshow.title || tvshow.name}}</span></center>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="player" class="reveal-modal expand">
+  <div class="row">
+    <div class="twelve columns">
+      <h3><a ng-click="revealInfo(tvshow.id)">←</a> {{tvshow.title}}</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="twelve columns">
+      <div id="playercont" style="width:100%; height:100%; border:1px solid gray; background-color: #efefef;">
+        <div id="mediaplayer">[player]</div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  	this should be a directive
+  	streamUrl,
+  	duration,
+  	size???
+  -->
+  <div class="row">
+    <div class="one columns">
+      <a id="playbtn" ng-click="play()" class="tiny button">play</a>
+    </div>
+    <div class="ten columns">
+      <span>{{curposition|duration}}</span>
+      <input type="range" id="seekbar" style="width:100%">
+      <span>-{{duration-curposition|duration}}</span>
+    </div>
+    <div class="one columns">
+      <a id="fullscrnbtn" ng-click="fullscreen()" class="tiny button">fs</a>
+    </div>
+  </div>
+
+  <a class="close-reveal-modal">×</a>
+</div>
+
+<div id="info" class="reveal-modal large">
+  <h3>{{movie.tmdb.title}}</h3>
+  <strong>id:</strong> {{movie.id}} <br/><br/>
+  <strong>size:</strong> {{movie.ffprobe.format.size|filesize:3}} <br/><br/>
+  <strong>duration:</strong> {{movie.ffprobe.format.duration|duration}} <br/><br/>
+  <strong>tags:</strong> {{movie.ffprobe.format.tags}} <br/><br/>
+  <a href="/api/download?id={{movie.id}}">download</a> <br/><br/>
+  <a href="/api/download?id={{movie.id}}&force=true">force download</a> <br/><br/>
+  <a ng-click="revealPlayer(movie.id)">watch</a>
+  <a class="close-reveal-modal">×</a>
+</div>

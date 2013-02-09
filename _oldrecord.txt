@@ -1,0 +1,169 @@
+{
+	"_id" : ObjectId("50dc3011cf1e8c6f5b000001"),
+	"name" : "1 Harold.&.Kumar.Go.To.White.Castle.2004.avi",
+	"path" : "/media/data/media/movies/1 Harold.&.Kumar.Go.To.White.Castle.2004.avi",
+	"ffprobeoutput" : {
+		"format" : {
+			"duration" : 5303.22306,
+			"filename" : "/media/data/media/movies/1 Harold.&.Kumar.Go.To.White.Castle.2004.avi",
+			"format_name" : "avi",
+			"nb_sreams" : 2,
+			"size" : NumberLong("2621134848"),
+			"tags" : {
+				"encoder" : "VirtualDubMod 1.5.10.2 (build 2540/release)"
+			}
+		},
+		"streams" : [
+			{
+				"codec_name" : "mpeg4",
+				"codec_type" : "video",
+				"width" : 1280,
+				"height" : 688
+			},
+			{
+				"codec_name" : "ac3",
+				"codec_type" : "audio",
+				"width" : 0,
+				"height" : 0
+			}
+		]
+	},
+	"tmdb" : {
+		"id" : 11282,
+		"title" : "Harold & Kumar Go to White Castle",
+		"backdrop_url" : "http://cf2.imgobject.com/t/p/w342/nCP8WeXDgFf2WQmnFaDjTWTo59L.jpg",
+		"poster_url" : "http://cf2.imgobject.com/t/p/w342/u22UFqbrj4tF8JucR2fX0Ts8qDh.jpg",
+		"backdrops" : [
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/nCP8WeXDgFf2WQmnFaDjTWTo59L.jpg",
+				"width" : 1280,
+				"height" : 720,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/wwKmTY8kulA7Z3wUqdO8m76nyzQ.jpg",
+				"width" : 1920,
+				"height" : 1080,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/dF5hrzDSJNBFXwbejUESCBYYq4D.jpg",
+				"width" : 1920,
+				"height" : 1080,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/wjR7sZZsRECRk3z1ZTgeAvTur5J.jpg",
+				"width" : 1920,
+				"height" : 1080,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/1Gi0kGuCu8CckYGO9biUR4hUaYc.jpg",
+				"width" : 1920,
+				"height" : 1080,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/6GZYxI1sn3iKxk5cgTBupn3n4y5.jpg",
+				"width" : 1920,
+				"height" : 1080,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/wTtNrjmUvUZG1OvEzRRmPnqIKk2.jpg",
+				"width" : 1280,
+				"height" : 720,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/iX6rfCIjfvBmmNihgaR7U2zDZRW.jpg",
+				"width" : 1280,
+				"height" : 720,
+				"iso_639_1" : null,
+				"aspect_ratio" : 1.78
+			}
+		],
+		"posters" : [
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/u22UFqbrj4tF8JucR2fX0Ts8qDh.jpg",
+				"width" : 1000,
+				"height" : 1500,
+				"iso_639_1" : "en",
+				"aspect_ratio" : 0.67
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/8yBb1F9wQGEXCimkELI7cmyH6tB.jpg",
+				"width" : 1000,
+				"height" : 1500,
+				"iso_639_1" : "en",
+				"aspect_ratio" : 0.67
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/g4ghBIryChw7TnY9DDRRNR74O5p.jpg",
+				"width" : 675,
+				"height" : 1000,
+				"iso_639_1" : null,
+				"aspect_ratio" : 0.68
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/mSdH5XpW1Rp0b88hoPGf9pAT3n1.jpg",
+				"width" : 1000,
+				"height" : 1500,
+				"iso_639_1" : "en",
+				"aspect_ratio" : 0.67
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/sUXDOsL8kDFDZ4RxL5dnKXp5FAt.jpg",
+				"width" : 1000,
+				"height" : 1500,
+				"iso_639_1" : "cs",
+				"aspect_ratio" : 0.67
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/owxSHw6SSDaZo65J47SeAacWjyR.jpg",
+				"width" : 1000,
+				"height" : 1500,
+				"iso_639_1" : null,
+				"aspect_ratio" : 0.67
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/qLoYudt4j2du86UCvCfizHjtrco.jpg",
+				"width" : 480,
+				"height" : 755,
+				"iso_639_1" : null,
+				"aspect_ratio" : 0.64
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/3BF6GmLWLPLbU8ryUKMIwHumPDj.png",
+				"width" : 570,
+				"height" : 759,
+				"iso_639_1" : null,
+				"aspect_ratio" : 0.75
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/2ms9g1lWfgB1itQ6bpWhSfZQjxi.jpg",
+				"width" : 499,
+				"height" : 700,
+				"iso_639_1" : null,
+				"aspect_ratio" : 0.71
+			},
+			{
+				"file_path" : "http://cf2.imgobject.com/t/p/w342/54osHTgPLbBpXT1Fih4453eysWP.jpg",
+				"width" : 400,
+				"height" : 584,
+				"iso_639_1" : "fr",
+				"aspect_ratio" : 0.68
+			}
+		]
+	},
+	"type" : "movie",
+	"search_string" : "1 Harold & Kumar Go To White Castle 2004"
+}

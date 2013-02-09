@@ -1,0 +1,2 @@
+function HomeCtrl($scope, $http) {
+}
