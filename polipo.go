@@ -19,6 +19,8 @@ var (
 )
 
 func GetPolipoHttpClient(hostport string) *http.Client {
+	return &http.Client{}
+
 	if polipoClient == nil {
 		log.Println("starting polipo client")
 		exec.Command("polipo", "-c", "polipo.conf")

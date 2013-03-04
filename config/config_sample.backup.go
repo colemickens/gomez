@@ -1,3 +1,5 @@
+//+build ignore
+
 package config
 
 /*
@@ -38,8 +40,8 @@ const SampleConfigStr = `{
 	},
 
 	"ffmpeg": {
-		"ffmpeg_binary":  "",
-		"ffprobe_binary": ""
+		"ffmpeg_binary":  "/home/cole/Code_ext/ffmpeg_workbench/ffmpeg/ffmpeg",
+		"ffprobe_binary": "/home/cole/Code_ext/ffmpeg_workbench/ffmpeg/ffprobe"
 	},
 
 	"web": {

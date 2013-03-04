@@ -87,12 +87,14 @@ func init() {
 
 	// Create Database Tables
 	tables := []interface{}{
-		&FfprobeOutput{},
-		&FfprobeStream{},
-		&TmdbMovie{},
-		&TmdbBackdrop{},
-		&TmdbPoster{},
-		&File{},
+		&FileRecord{}, // dao_file.go
+
+		&FfprobeFormatRecord{}, // dao_ffprobe.go
+		&FfprobeStreamRecord{},
+
+		&TmdbMovieRecord{}, // dao_movie.go
+		&TmdbBackdropRecord{},
+		&TmdbPosterRecord{},
 	}
 	for _, t := range tables {
 		if cfg.Db.DropOnStart {

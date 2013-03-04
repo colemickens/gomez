@@ -1,51 +1,18 @@
 package main
 
 import (
-	"github.com/colemickens/gomez/ffmpeg"
-	"github.com/colemickens/gomez/tmdb"
+	"github.com/eaigner/hood"
 	"github.com/howeyc/fsnotify"
+
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
-)
-
-type LibraryType int
-
-const (
-	MoviesLibType  LibraryType = iota
-	TvshowsLibType LibraryType = iota
-	MusicType      LibraryType = iota
+	"time"
 )
 
 type Library struct {
 	Watcher *fsnotify.Watcher
-}
-
-type Entry struct {
-	Id   int64  `json:"id" bson:"_id"`
-	Name string `json:"name"`
-	Path string `json:"path"`
-
-	FfprobeOutput *ffmpeg.ProbeOutput `json:"ffprobe_output"`
-	// ^^ Yuck, this is going to change
-	// anyway as I move to RDBMS
-
-	//TvdbEntry     *tvdb.Entry            `json:"tvdb"`
-	//CddbEntry     *cddb.Entry            `json:"cddb"`
-
-	Tmdb          *tmdb.Movie `json:"tmdb"`
-	Type          string      `json:"type"`
-	Search_string string      `json:"search_string"`
-}
-
-type ListEntry struct {
-	Id            int64   `json:"id"`
-	Name          string  `json:"name"`
-	Title         string  `json:"title"`
-	Search_string string  `json:"search_string"`
-	Duration      float64 `json:"duration"`
-	Poster_url    string  `json:"poster_url"`
 }
 
 func NewLibrary() (*Library, error) {
@@ -60,145 +27,90 @@ func NewLibrary() (*Library, error) {
 	}, nil
 }
 
-// should this be???
 func (l *Library) Run() (err error) {
-	go func() {
-		for {
-			select {
-			case ev := <-l.Watcher.Event:
-				log.Println(ev.String())
-				if ev.IsDelete() {
-					// TODO:
-					// for shame, cole, write some tests
-					// SHAME
-				}
-				if ev.IsRename() {
-					// update the path in the db entry
-					// delete the tmdb info and add it to the queue
-					if err != nil {
-						log.Println(err)
-					}
-				}
-				if ev.IsCreate() {
-					// ?
-					// -- if file
-					// -- -- ffprobe? (ffprobe queue?)
-					// -- if dir
-					// -- -- watch dir
-					// -- -- ffprobe dir's contents (recursively)
-					// -- -- should make scanFs add to watcher
-					// -- -- -- then we just call scanFs(newDir)
-					// -- -- -- it adds and probes. voila!
-				}
-			case err := <-l.Watcher.Error:
-				log.Println("watcher err:", err)
-			}
-		}
-	}()
-
-	entryChan := make(chan *Entry)
-	mdChan := make(chan *Entry)
-	c := make(chan int)
-
-	go l.probeQueue(entryChan)
-	//go l.probeQueue(entryChan)
-	//go l.probeQueue(entryChan)
-
-	go l.mdQueue(mdChan)
-
-	exitCount := 0
 	for _, p := range cfg.Library.MovieDirs {
 		log.Println(p)
-		go l.scanFilesystem(p, "movie", entryChan, mdChan, c, true) // wait group these or what?
-		exitCount++
+		go l.scanFilesystem(p, movieFileHandler)
 	}
+
+	for _, p := range cfg.Library.TvshowDirs {
+		log.Println(p)
+		go l.scanFilesystem(p, tvshowFileHandler)
+	}
+
 	/*
 		for _, p := range l.Cfg.Library.MusicDirs {
 			_ = p
-			go l.scanFilesystem(p, "music", entryChan, mdChan, c, true)
-			exitCount++
-		}
-		for _, p := range l.Cfg.Library.TvshowDirs {
-			_ = p
-			go l.scanFilesystem(p, "tvshow", entryChan, mdChan, c, true)
+			go l.scanFilesystem(p, musicFileHandler, exitChan, true)
 			exitCount++
 		}
 	*/
 
-	for i := 0; i < exitCount; i++ {
-		<-c
+	for {
+		l.findMetadata()
+		time.Sleep(10 * time.Second)
 	}
-	close(c)
-	close(entryChan)
 
 	return
 }
 
 func (l *Library) Stop() {
-	l.Watcher.Close()
+	//l.Watcher.Close()
+	// shut down the findMetadata() loop
 }
 
-func (l *Library) PathForId(id string) string {
-	var entry Entry
-	hd.Where("id = ?", id).Find(&entry)
-	log.Println(id)
-	/*
-		err := l.Db.FindId(bson.ObjectIdHex(id)).One(&entry)
-		if err != nil {
-			log.Println("FindId/One", err)
-		}
-
-		return entry.Path
-	*/
-	return ""
+func movieFileHandler(f *FileRecord) {
+	log.Println("movieFileHandler", f)
 }
 
-func (l *Library) ListType(t string) (listEntries []ListEntry) {
-	entries := []Entry{}
-	_ = hd.Find(&entries)
+func tvshowFileHandler(f *FileRecord) {
+	log.Println("tvshowFileHandler", f)
+}
 
-	for _, e := range entries {
-		// TODO: Clean this up more
-		/*
-			if e.Tmdb == nil {
-				log.Println("tmdb content is nil, can't procede")
-				continue
-			}
-			if e.FfprobeOutput == nil {
-				log.Println("ffprobe content is nil, can't procede")
-				continue
-			}
-		*/
-		var duration float64 = -1
-		title := ""
-		poster_url := ""
+func musicFileHandler(f *FileRecord) {
+	log.Println("musicFileHandler", f)
+}
 
-		if e.FfprobeOutput != nil {
-			duration = e.FfprobeOutput.Format.Duration
+func (l *Library) findMetadata() {
+	// do shit here, find metadata
+	// concurrently fire out to
+	// -> TMDB
+	// -> TVDB
+	// -> IMDB
+	// -> CDDB
+	// -> OpenSubtitles -> Hashing
+
+	findFfprobeRecords := func() {
+		type res struct {
+			FileRecordId          int
+			FfprobeFormatRecordId int
 		}
-		if e.Tmdb != nil {
-			title = e.Tmdb.Title
-			poster_url = e.Tmdb.Poster_url
-		}
-
-		listEntries = append(listEntries, ListEntry{
-			Id:            e.Id,
-			Name:          e.Name,
-			Title:         title,
-			Search_string: e.Search_string,
-			Duration:      duration,
-			Poster_url:    poster_url,
-		})
+		var results []res
+		hd.Where("ffprobe_format_record.id", "=", "null").
+			Join(hood.InnerJoin, &FfprobeFormatRecord{}, "file.id", "ffprobe_format_record.file_id").
+			Find(results)
 	}
 
-	return
+	panic(results)
+
+	findTmdbRecords := func() {
+		type res struct {
+			FileRecordId      int
+			TmdbMovieRecordId int
+		}
+		results := make([]res)
+		hd.Where("tmdb.id", "=", "null").
+			Join(hood.InnerJoin, &MovieRecord{}, "file.id", "movie.file_id").
+			Join(hood.InnerJoin, &TmdbRecord{}, "movie.id", "tmdb_movie_record.movie_id").
+			Find(results)
+	}
+
+	findTvdbRecords := func() {
+		hd.Whrere("tvdb.id", "=", "null").Join(hood.InnerJoin, &TvDb)
+	}
 }
 
-func (l *Library) EntryForId(id string) Entry {
-	entry := Entry{}
-	return entry
-}
-
+/*
 func (l *Library) mdQueue(mdChan chan *Entry) {
 	for e := range mdChan {
 		if e.Type == "movie" {
@@ -223,15 +135,15 @@ func (l *Library) mdQueue(mdChan chan *Entry) {
 func (l *Library) probeQueue(entryChan chan *Entry) {
 	for e := range entryChan {
 		// check if it exists in the library?
-		/*
-			entry := &ffprobe.Output{}
-			l.Db.Find(map[string]string{"path:": e.Path}).One(&e.Ffprobe)
-			if entry != nil {
-			log.Println("possible already exists: ", e.Path, entry)
-				// probably exists
-				//continue
-			}
-		*/
+
+//			entry := &ffprobe.Output{}
+//			l.Db.Find(map[string]string{"path:": e.Path}).One(&e.Ffprobe)
+//			if entry != nil {
+//			log.Println("possible already exists: ", e.Path, entry)
+//				// probably exists
+//				//continue
+//			}
+
 
 		probeinfo, err := prober.ProbeFile(e.Path)
 		if err != nil {
@@ -251,26 +163,9 @@ func (l *Library) probeQueue(entryChan chan *Entry) {
 		}
 	}
 }
+*/
 
-// it comes in, we parse url
-// put parsed url in
-// queue loads from mongo db to link to synced db info
-// also loads to attempt to link it to a tvdb/tmdb/cddb entry.
-
-// TODO : man, how can I do this without toplevel?? :/
-// or well, without using a separate function? I could extract the
-// inner walk call, but I do alot around it and call this in
-// several places :/
-func (l *Library) scanFilesystem(walkPath string, lt string, entryChan chan *Entry, mdChan chan *Entry, c chan int, toplevel bool) {
-	log.Println("before eval:", walkPath)
-	var err error
-	// TODO: Do I need to do this still?
-	walkPath, err = filepath.EvalSymlinks(walkPath)
-	if err != nil {
-		log.Println("eval err", err)
-	}
-	log.Println("after eval:", walkPath)
-
+func (l *Library) scanFilesystem(walkPath string, cb func(*FileRecord)) {
 	filepath.Walk(walkPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			log.Println("errrr", walkPath, path)
@@ -286,57 +181,29 @@ func (l *Library) scanFilesystem(walkPath string, lt string, entryChan chan *Ent
 			}
 			return false
 		}() {
-			//log.Println("skipping")
+			log.Println("skipping")
 			return nil
 		}
 
-		// TODO: add if l.Cfg.Follow_symlinks
-
 		linfo2, err := os.Lstat(path)
 
-		if linfo2.Mode()&os.ModeSymlink == os.ModeSymlink {
-			l.scanFilesystem(path, lt, entryChan, mdChan, c, false)
-		} else if info.IsDir() {
-			if err := l.Watcher.Watch(path); err != nil {
-				log.Println("err watching ", path, err)
-			} else {
-				log.Println("watching:", path)
-			}
+		if cfg.Library.FollowSymlinks && linfo2.Mode()&os.ModeSymlink == os.ModeSymlink {
+			l.scanFsInternal(path, lt, entryChan, mdChan, c)
 		} else if isMediaFile(path) {
 			if !gd.PathExists(path) {
-				f := File{
-					Path:         path,
-					SearchString: scrubVideoString(path), // do we need to store this even?
-					// this is more of an accounting thing
+				f := &File{
+					Path: path,
 				}
-				gd.AddNewFile(&f)
-				log.Println("added new file", f)
-				// add it to a queue orrrrrr
-				// let a worker pull from sql?
+				_, err = hd.Save(entry)
+				if err != nil {
+					panic(err)
+				}
 			} else {
 				log.Println("skip existing file", path)
 			}
-
-			entry := &Entry{
-				Name:          linfo2.Name(),
-				Path:          path,
-				FfprobeOutput: nil,
-				Type:          lt,
-				Search_string: scrubVideoString(path),
-			}
-			_, err = hd.Save(entry)
-			if err != nil {
-				log.Println("***", err)
-			}
-			entryChan <- entry
-			mdChan <- entry
 		}
 		return nil
 	})
-
-	if toplevel {
-		c <- 1
-	}
 }
 
 const videoextensions = ".m4v .3gp .nsv .ts .ty .strm .rm .rmvb .m3u .ifo .mov .qt .divx .xvid .bivx .vob .nrg .img .iso .pva .wmv .asf .asx .ogm .m2v .avi .bin .dat .dvr-ms .mpg .mpeg .mp4 .mkv .avc .vp3 .svq3 .nuv .viv .fli .flv .rar .001 .wpl .zip"

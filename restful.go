@@ -60,7 +60,9 @@ func NewTvShowService() *restful.WebService {
 	// /?show={showid}
 	// /shows ?
 	// /episodes ?
-	ws.Route(ws.GET("").To(getAllMovies))
+	ws.Route(ws.GET("/episodes").To(getAllEpisodes))
+
+	ws.Route(ws.GET("/tvshows").To(getAllTvShows))
 
 	ws.Route(ws.GET("/{id}").To(getMovie)).
 		Doc("get a tvshow by its id").
@@ -68,6 +70,7 @@ func NewTvShowService() *restful.WebService {
 }
 */
 
+/*
 func NewMusicService() *restful.WebService {
 	ws := new(restful.WebService)
 	ws.Path("/api/v2/music").
@@ -93,6 +96,7 @@ func NewMusicService() *restful.WebService {
 
 	return ws
 }
+*/
 
 func apiServices() {
 	restful.Add(NewMovieService())
