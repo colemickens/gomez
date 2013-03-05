@@ -79,7 +79,6 @@ func init() {
 	}
 
 	// Connect to Database
-	hood.RegisterDialect("sqlite3", hood.NewSqlite3())
 	hd, err = hood.Open(cfg.Db.Type, cfg.Db.ConnectionString)
 	if err != nil {
 		panic(err)

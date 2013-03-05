@@ -4,28 +4,40 @@ import (
 	"github.com/eaigner/hood"
 )
 
-type TmdbMovieRecord struct {
-	// something embedded that gives me .Save() for this DAO?
-	Id          hood.Id `json:"id"`
-	FileId      int32   `json:"file_id"`
-	TmdbId      int32   `json:"tmdb_id"`
-	Title       string  `json:"title"`
-	BackdropUrl string  `json:"backdrop_url"`
-	PosterUrl   string  `json:"poster_url"`
+type MovieFile struct {
+	Id   hood.Id `json:"id"`
+	Path string  `json:"path"`
 }
 
-type TmdbBackdropRecord struct {
+type MovieFileToTmdbMovie struct {
+}
+
+type TmdbMovie struct {
+	Id     hood.Id `json:"id"`
+	Title  string  `json:"title"`
+	Year   int32   `json:"year"` //? 
+
+	// do I need these vvvvvvvvvvvv
+	BackdropUrl string `json:"backdrop_url"`
+	PosterUrl   string `json:"poster_url"`
+}
+
+type TmdbBackdrop struct {
 	Id          hood.Id `json:"id"`
-	TmdbMovieId int32   `json:"tmdb_movie_id"`
+	TmdbMovieId int32   `json:"tmdb_movie_record_id"`
 	Url         string  `json:"url"`
 	Width       int32   `json:"width"`
 	Height      int32   `json:"height"`
 }
 
-type TmdbPosterRecord struct {
+type TmdbPoster struct {
 	Id          hood.Id `json:"id"`
-	TmdbMovieId int32   `json:"tmdb_movie_id"`
+	TmdbMovieId int32   `json:"tmdb_movie_record_id"`
 	Url         string  `json:"url"`
 	Width       int32   `json:"width"`
 	Height      int32   `json:"height"`
 }
+
+// path : provider
+// /t/mm/mike.molly.s01e01 -> tvdb
+// 

@@ -61,6 +61,8 @@ func (l *Library) Stop() {
 
 func movieFileHandler(f *FileRecord) {
 	log.Println("movieFileHandler", f)
+	// Create MovieFileRecord
+	// let FindMetadata() do the rest later
 }
 
 func tvshowFileHandler(f *FileRecord) {
@@ -89,24 +91,26 @@ func (l *Library) findMetadata() {
 		hd.Where("ffprobe_format_record.id", "=", "null").
 			Join(hood.InnerJoin, &FfprobeFormatRecord{}, "file.id", "ffprobe_format_record.file_id").
 			Find(results)
+
+		panic(results)
 	}
 
-	panic(results)
+	findFfprobeRecords()
 
 	findTmdbRecords := func() {
 		type res struct {
 			FileRecordId      int
 			TmdbMovieRecordId int
 		}
-		results := make([]res)
+		var results []res
 		hd.Where("tmdb.id", "=", "null").
-			Join(hood.InnerJoin, &MovieRecord{}, "file.id", "movie.file_id").
-			Join(hood.InnerJoin, &TmdbRecord{}, "movie.id", "tmdb_movie_record.movie_id").
+			Join(hood.InnerJoin, &MovieFileRecord{}, "file.id", "movie.file_id").
+			Join(hood.InnerJoin, &TmdbMovieRecord{}, "movie.id", "tmdb_movie_record.movie_id").
 			Find(results)
 	}
 
 	findTvdbRecords := func() {
-		hd.Whrere("tvdb.id", "=", "null").Join(hood.InnerJoin, &TvDb)
+		//hd.Where("tvdb.id", "=", "null").Join(hood.InnerJoin, &TvDb)
 	}
 }
 
@@ -188,13 +192,13 @@ func (l *Library) scanFilesystem(walkPath string, cb func(*FileRecord)) {
 		linfo2, err := os.Lstat(path)
 
 		if cfg.Library.FollowSymlinks && linfo2.Mode()&os.ModeSymlink == os.ModeSymlink {
-			l.scanFsInternal(path, lt, entryChan, mdChan, c)
+			l.scanFilesystem(path, cb)
 		} else if isMediaFile(path) {
 			if !gd.PathExists(path) {
-				f := &File{
+				record := &FileRecord{
 					Path: path,
 				}
-				_, err = hd.Save(entry)
+				_, err = hd.Save(record)
 				if err != nil {
 					panic(err)
 				}

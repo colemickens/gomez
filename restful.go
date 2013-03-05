@@ -8,6 +8,8 @@ import (
 )
 
 func getAllMovies(request *restful.Request, response *restful.Response) {
+	var movies []TmdbMovieRecord
+	hd.Find(movies)
 	movies, err := gd.GetAllMovies()
 	if err != nil {
 		panic(err)
@@ -100,7 +102,8 @@ func NewMusicService() *restful.WebService {
 
 func apiServices() {
 	restful.Add(NewMovieService())
-	restful.Add(NewMusicService())
+	//restful.Add(NewTvShowService())
+	//restful.Add(NewMusicService())
 
 	basePath := "http://" + cfg.Web.Hostname
 	config := restful.SwaggerConfig{
