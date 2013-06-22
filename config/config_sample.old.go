@@ -1,17 +1,10 @@
-//+build ignore
-
 package config
-
-/*
-	"type":     "postgres",
-	"connection_string": "user=gomez dbname=gomez password=gomez_+234hjk;h98jkjjnasdf,bn,c.bvhgipuhtprfbv sslmode=disable"
-*/
 
 const SampleConfigStr = `{
 	"db": {
-		"type":     "sqlite3",
-		"connection_string": "./gomez.db",
-		"drop_on_start": "true"
+		"type":              "postgres",
+		"connection_string": "user=gomez dbname=gomez password=gomez234hjkh98jkjjnasdfb9088cbvhgipuhtprfbv sslmode=disable"
+		"drop_on_start":     "true"
 	},
 
 	"tmdb": {
@@ -40,8 +33,8 @@ const SampleConfigStr = `{
 	},
 
 	"ffmpeg": {
-		"ffmpeg_binary":  "/home/cole/Code_ext/ffmpeg_workbench/ffmpeg/ffmpeg",
-		"ffprobe_binary": "/home/cole/Code_ext/ffmpeg_workbench/ffmpeg/ffprobe"
+		"ffmpeg_binary":  "",
+		"ffprobe_binary": ""
 	},
 
 	"web": {

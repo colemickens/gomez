@@ -125,6 +125,25 @@ func main() {
 	}
 	go library.Run()
 
+	{
+	{
+		label: "movies",
+		path: "/media/data/media/movies",
+		scraper: "tmdb",
+		type: "movies"
+	},
+	{
+		"/media/data/media/tvshows",
+		"tvshows",
+		"tvdb"
+	},
+	{
+		"/media/data/media/documentaries",
+		"documentaries",
+		"tvdb",
+	}
+	}
+
 	// library.AddChannel("tvshows", {
 	// 	rootPath := "/path/to/tvshows/"
 	// });
@@ -146,7 +165,7 @@ func main() {
 	// 		go l.Run()
 	// 	}
 
-	//upnpServer := upnpav.NewServer("Name", "something_else", handler)
+	//upnpServer := upnpav.NewServer("Name", "something_else", "eth0", handler)
 	//go upnpServer.Run().
 
 	go apiServices()
